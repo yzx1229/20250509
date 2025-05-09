@@ -4,6 +4,8 @@
 let video;
 let handPose;
 let hands = [];
+let circleX, circleY;
+let circleRadius = 50; // 半徑為 50，直徑為 100
 
 function preload() {
   // Initialize HandPose model with flipped video input
@@ -23,12 +25,21 @@ function setup() {
   video = createCapture(VIDEO, { flipped: true });
   video.hide();
 
+  // 初始化圓的位置在視窗中間
+  circleX = width / 2;
+  circleY = height / 2;
+
   // Start detecting hands
   handPose.detectStart(video, gotHands);
 }
 
 function draw() {
   image(video, 0, 0);
+
+  // 繪製圓
+  fill(0, 255, 0, 150); // 半透明綠色
+  noStroke();
+  ellipse(circleX, circleY, circleRadius * 2);
 
   // Ensure at least one hand is detected
   if (hands.length > 0) {
@@ -46,7 +57,7 @@ function draw() {
           }
 
           noStroke();
-          //circle(keypoint.x, keypoint.y, 16);
+          circle(keypoint.x, keypoint.y, 16);
         }
 
         // Connect keypoints with lines
@@ -101,6 +112,15 @@ function draw() {
             hand.keypoints[i + 1].x,
             hand.keypoints[i + 1].y
           );
+        }
+
+        // 檢測食指（keypoints[8]）是否碰觸圓
+        let indexFinger = hand.keypoints[8];
+        let d = dist(indexFinger.x, indexFinger.y, circleX, circleY);
+        if (d < circleRadius) {
+          // 如果碰觸，讓圓跟隨食指移動
+          circleX = indexFinger.x;
+          circleY = indexFinger.y;
         }
       }
     }
