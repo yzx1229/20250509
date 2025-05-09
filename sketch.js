@@ -51,7 +51,7 @@ function draw() {
 
         // Connect keypoints with lines
         stroke(0); // Set line color
-        strokeWeight(2);
+        strokeWeight(10);
 
         // Connect keypoints 0 to 4
         for (let i = 0; i < 4; i++) {
