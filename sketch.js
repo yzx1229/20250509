@@ -85,9 +85,13 @@ function draw() {
         if (dIndex < circleRadius && dThumb < circleRadius) {
           // 如果兩者同時觸碰，讓圓跟隨手指移動
           isTouching = true;
-          prevX = circleX; // 更新前一個位置
+
+          // 更新前一個位置
+          prevX = circleX;
           prevY = circleY;
-          circleX = (indexFinger.x + thumb.x) / 2; // 圓心移動到兩指之間
+
+          // 更新圓心位置
+          circleX = (indexFinger.x + thumb.x) / 2;
           circleY = (indexFinger.y + thumb.y) / 2;
         }
       }
